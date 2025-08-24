@@ -3,8 +3,13 @@ async function loadWebsite() {
     const websiteContent = document.getElementById('websiteContent');
     websiteContent.innerHTML = 'Loading...';
 
+    let url = urlInput;
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        url = 'https://' + url;
+    }
+
     try {
-        const response = await fetch('/.netlify/functions/fetch-website?url=' + encodeURIComponent(urlInput));
+        const response = await fetch('/.netlify/functions/fetch-website?url=' + encodeURIComponent(url));
         const data = await response.json();
         if (data.error) {
             websiteContent.innerHTML = 'Error: ' + data.error;
